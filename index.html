@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>釜山五天四夜：簡約旅遊手札</title>
+    
+    <!-- iOS 專屬 Web App 屬性設定（加入主畫面後自動啟用免瀏覽器外殼模式） -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="釜山旅遊手札">
+    
+    <!-- 引入您指定的 App 圖示（指向您上傳的圖示圖片名稱） -->
+    <link rel="apple-touch-icon" href="S__263086134.jpg">
+    
+    <!-- 引入 Google Fonts Merriweather -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --color-bg: #EAE6E1;         /* 燕麥暖灰 */
+            --color-primary: #8FA2B0;    /* 霧霾藍 */
+            --color-secondary: #C8B1B1;  /* 煙粉紅 */
+            --color-accent: #A2AEA0;     /* 茶鼠綠 */
+            --color-text-main: #3E3E3E;  /* 柔和黑 */
+            --color-text-muted: #7E7E7E; /* 質感灰 */
+        }
+
+        /* 舒適閱讀感設定與 iOS 防止整頁彈性滾動過界 */
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            font-family: "Microsoft JhengHei", "Heiti TC", "Merriweather", sans-serif;
+            font-weight: 400;
+            line-height: 1.8;
+            letter-spacing: 0.06em;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* 防止最外層 body 滾動爆版 */
+        }
+
+        /* 英文與數字優先使用 Merriweather */
+        .eng-text {
+            font-family: "Merriweather", serif;
+            font-weight: 400;
+        }
+
+        /* 手機外殼容器 - 改用 iOS 特殊動態視窗高度 100dvh，百分百防溢出並適應 Safe Area */
+        .phone-container {
+            width: 100%;
+            max-width: 414px;
+            height: 100dvh; 
+            background: #FAF9F6; /* 非常柔和的極淺燕麥白 */
+            box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            /* 適應 iOS 瀏海頭與底部 Indicator 的邊距安全區 */
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        /* 大標題 */
+        .header-section {
+            background-color: #FAF9F6;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0; /* 確保頭部不被壓縮 */
+        }
+
+        h1.day-title {
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 0.15em;
+            color: var(--color-text-main);
+            margin: 0;
+        }
+
+        /* 滾動內容包裝容器（將上半段與下半段牢牢限制在 100dvh 剩餘空間中） */
+        .scroll-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 核心行程區塊 */
+        .main-content {
+            flex: 1; /* 平分或自動佔用上半部 */
+            overflow-y: auto;
+            padding: 20px 20px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch; /* 讓 iOS 滾動極度平滑 */
+        }
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 經典時間節點 */
+        .time-node {
+            display: flex;
+            margin-bottom: 22px;
+            border-left: 1px solid var(--color-primary);
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .time-node::before {
+            content: '';
+            position: absolute;
+            left: -4.5px;
+            top: 7px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-primary);
+        }
+
+        .section-title {
+            color: var(--color-primary);
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 0.08em;
+            margin-bottom: 22px;
+        }
+
+        .supplement-title {
+            color: var(--color-text-main);
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            border-left: 2.5px solid var(--color-secondary);
+            padding-left: 8px;
+        }
+
+        /* 下方補充區塊 - 佔比設為固定的 35%，並強制不超出剩餘高度 */
+        .supplement-section {
+            height: 35%;
+            background-color: #F3F1ED; /* 做出與上方內容的層次區隔 */
+            border-top: 1px solid rgba(0,0,0,0.04);
+            padding: 20px;
+            overflow-y: auto;
+            scrollbar-width: none;
+            flex-shrink: 0; /* 確保不會被上方內容排擠 */
+            -webkit-overflow-scrolling: touch;
+        }
+        .supplement-section::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 簡約卡片排版 */
+        .info-card {
+            background: white;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+        }
+
+        /* 底部導覽列 */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 16px;
+            background: white;
+            border-top: 1px solid rgba(0,0,0,0.04);
+            z-index: 10;
+            flex-shrink: 0; /* 確保不被壓縮 */
+        }
+
+        .nav-btn {
+            color: var(--color-text-muted);
+            font-family: 'Merriweather', serif;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+        }
+
+        .nav-btn.active {
+            color: var(--color-primary);
+            border-bottom: 2px solid var(--color-primary);
+            font-weight: 700;
+        }
+
+        /* AI 抽屜樣式 - 針對 iOS 適應防超出 */
+        .ai-drawer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 85%;
+            background: #FAF9F6;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.08);
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        .ai-drawer.open {
+            transform: translateY(0);
+        }
+
+        /* 滾動條隱藏 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 記帳換算工具專屬抽屜樣式 */
+        .fin-drawer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 85%;
+            background: #FAF9F6;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.08);
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        .fin-drawer.open {
+            transform: translateY(0);
+        }
+
+        /* 莫蘭迪風格 Toggle 開關 */
+        .fin-toggle-checkbox:checked {
+            right: 0;
+            border-color: var(--color-accent);
+        }
+        .fin-toggle-checkbox:checked + .fin-toggle-label {
+            background-color: var(--color-accent);
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center h-screen">
+
+<div class="phone-container">
+    <!-- Header -->
+    <div class="header-section">
+        <h1 class="day-title" id="current-day-header">DAY 1</h1>
+        
+        <!-- AI 門戶按鈕 -->
+        <button onclick="toggleAIDrawer(true)" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#8FA2B0]/10 text-[#8FA2B0] hover:bg-[#8FA2B0]/20 transition-all text-xs font-semibold">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L14.8 8.4L21.2 11.2L14.8 14L12 20.4L9.2 14L2.8 11.2L9.2 8.4L12 2Z" />
+            </svg>
+            <span>AI 旅伴</span>
+        </button>
+    </div>
+
+    <!-- 滾動內容包裝容器 -->
+    <div class="scroll-wrapper">
+        <!-- Main Itinerary (Top Content) -->
+        <div class="main-content" id="itinerary-content-area">
+            <!-- Content will be injected dynamically -->
+        </div>
+
+        <!-- Supplement Info (Bottom Content) -->
+        <div class="supplement-section" id="supplement-content-area">
+            <!-- Content will be injected dynamically -->
+        </div>
+    </div>
+
+    <!-- 消費統計總覽懸浮按鈕 (FAB) - 移除 bounce 類別，使其保持精緻靜止狀態 -->
+    <button onclick="toggleSummaryDrawer(true)" class="absolute bottom-36 right-4 w-12 h-12 rounded-full bg-[#8FA2B0] text-white shadow-lg flex items-center justify-center hover:bg-[#8FA2B0]/90 transition-all z-40" title="消費統計總覽">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
+        </svg>
+    </button>
+
+    <!-- 記帳與匯率懸浮按鈕 (FAB) -->
+    <button onclick="toggleFinanceDrawer(true)" class="absolute bottom-20 right-4 w-12 h-12 rounded-full bg-[#A2AEA0] text-white shadow-lg flex items-center justify-center hover:bg-[#A2AEA0]/90 transition-all z-40" title="記帳與換算">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+    </button>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <span class="nav-btn active" onclick="switchDay('6/2')">6/2</span>
+        <span class="nav-btn" onclick="switchDay('6/3')">6/3</span>
+        <span class="nav-btn" onclick="switchDay('6/4')">6/4</span>
+        <span class="nav-btn" onclick="switchDay('6/5')">6/5</span>
+        <span class="nav-btn" onclick="switchDay('6/6')">6/6</span>
+    </div>
+
+    <!-- AI Drawer Panel -->
+    <div id="ai-drawer" class="ai-drawer">
+        <!-- Drawer Header -->
+        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-[#FAF9F6] rounded-t-20">
+            <div class="flex items-center space-x-2">
+                <span class="text-xs bg-[#8FA2B0] text-white px-2 py-0.5 rounded font-bold eng-text">AI</span>
+                <h2 class="text-sm font-bold text-gray-700">釜山智能旅伴</h2>
+            </div>
+            <button onclick="toggleAIDrawer(false)" class="text-gray-400 hover:text-gray-600 p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Drawer Content -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar">
+            <!-- Context Banner -->
+            <div class="p-3 rounded-lg bg-[#EAE6E1]/40 border border-[#EAE6E1] text-xs text-gray-600">
+                💡 助理已為您載入今日行程資訊，可提供專屬的韓文翻譯、點餐溝通、交通及天氣備案。
+            </div>
+
+            <!-- Predefined AI Prompts -->
+            <div class="space-y-2">
+                <h3 class="text-[0.75rem] font-bold text-gray-400 tracking-wider">今日快捷助手</h3>
+                <div class="grid grid-cols-1 gap-2">
+                    <button onclick="askPreset('food')" class="text-left p-3 rounded-lg bg-white border border-gray-100 hover:border-[#8FA2B0]/40 transition-all text-xs text-gray-700 hover:shadow-sm">
+                        <p class="font-bold text-[#8FA2B0] mb-0.5">💡 點餐與韓文溝通助手</p>
+                        <p class="text-gray-400 text-[0.7rem] leading-normal">自動為今日安排的餐點與餐廳，生成實用的對話與韓文菜單發音。</p>
+                    </button>
+                    <button onclick="askPreset('taxi')" class="text-left p-3 rounded-lg bg-white border border-gray-100 hover:border-[#8FA2B0]/40 transition-all text-xs text-gray-700 hover:shadow-sm">
+                        <p class="font-bold text-[#A2AEA0] mb-0.5">🚕 運將複製貼上助手</p>
+                        <p class="text-gray-400 text-[0.7rem] leading-normal">整理今日所有飯店與景點的韓文名稱與地址，方便直接秀給司機看。</p>
+                    </button>
+                    <button onclick="askPreset('weather')" class="text-left p-3 rounded-lg bg-white border border-gray-100 hover:border-[#8FA2B0]/40 transition-all text-xs text-gray-700 hover:shadow-sm">
+                        <p class="font-bold text-[#C8B1B1] mb-0.5">🌧️ 臨時下雨備案規劃</p>
+                        <p class="text-gray-400 text-[0.7rem] leading-normal">若遇到氣候不佳，為今日室外行程推薦鄰近的最佳雨天微調指南。</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Response Box -->
+            <div id="ai-response-container" class="hidden space-y-2">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-[0.75rem] font-bold text-gray-400 tracking-wider">助理回覆</h3>
+                    <button onclick="copyResponse()" class="text-[0.7rem] text-[#8FA2B0] hover:underline flex items-center space-x-1">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+                        <span>複製文字</span>
+                    </button>
+                </div>
+                <div id="ai-response-content" class="bg-white p-4 rounded-lg border border-gray-100 text-xs text-gray-600 leading-relaxed max-h-[200px] overflow-y-auto whitespace-pre-wrap select-text">
+                    <!-- AI response will go here -->
+                </div>
+            </div>
+
+            <!-- Custom API Key Setup -->
+            <div class="pt-2 border-t border-gray-100">
+                <details class="text-[0.7rem] text-gray-400 cursor-pointer">
+                    <summary class="hover:text-gray-600">自訂 API 金鑰設定 (選填)</summary>
+                    <div class="mt-2 space-y-1.5">
+                        <p class="text-[0.65rem] text-gray-400">在 Canvas 環境中會自動帶入 API key。若於一般瀏覽器單獨打開，可手動填入：</p>
+                        <input id="custom-api-key" type="password" placeholder="輸入您的 Gemini API Key" class="w-full p-2 border border-gray-200 rounded text-xs focus:outline-none focus:ring-1 focus:ring-[#8FA2B0]">
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="p-3 border-t border-gray-100 bg-white flex items-center space-x-2">
+            <input id="ai-chat-input" type="text" placeholder="向 AI 詢問今日釜山行程疑問..." class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#8FA2B0]">
+            <button onclick="sendChatMessage()" class="p-2 bg-[#8FA2B0] hover:bg-[#8FA2B0]/90 text-white rounded-lg transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- 記帳與換算工具抽屜 (Finance Drawer) -->
+    <div id="fin-drawer" class="fin-drawer">
+        <!-- Drawer Header -->
+        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-[#FAF9F6] rounded-t-20">
+            <div class="flex items-center space-x-2">
+                <span class="text-xs bg-[#A2AEA0] text-white px-2 py-0.5 rounded font-bold eng-text">KRW</span>
+                <h2 class="text-sm font-bold text-gray-700">記帳與匯率換算</h2>
+            </div>
+            <button onclick="toggleFinanceDrawer(false)" class="text-gray-400 hover:text-gray-600 p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Drawer Content (Scrollable) -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar pb-36">
+            <!-- Rate Display -->
+            <div class="bg-[#8FA2B0]/10 border border-[#8FA2B0]/20 p-4 rounded-2xl flex justify-between items-center">
+                <span class="text-[#8FA2B0] font-bold text-xs flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                    即時匯率: 1 TWD ≈ <span id="fin-rate-value" class="ml-1">47.89</span> KRW
+                </span>
+                <span class="text-[#8FA2B0]/70 text-[0.65rem] font-bold uppercase tracking-wider">自動同步</span>
+            </div>
+
+            <!-- Input Card -->
+            <div class="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm space-y-4">
+                <div>
+                    <p class="text-xs text-gray-400 font-bold mb-1">輸入金額 (KRW)</p>
+                    <input type="text" id="fin-amount-input" value="0" oninput="BusanFinance.calculate()" class="w-full text-2xl font-black text-[#3E3E3E] outline-none border-b border-gray-100 pb-2 focus:border-[#8FA2B0]/50">
+                </div>
+               
+                <!-- Tax Toggle -->
+                <div class="bg-[#FAF9F6] p-3.5 rounded-2xl flex justify-between items-center border border-gray-100">
+                    <div>
+                        <p class="text-xs font-bold text-gray-600">是否可退稅</p>
+                        <p class="text-[0.65rem] text-[#C8B1B1] font-bold">退稅門檻: 15,000₩</p>
+                    </div>
+                    <div class="relative inline-block w-10 h-5 transition duration-200 ease-in select-none">
+                        <input type="checkbox" id="fin-tax-toggle" onchange="BusanFinance.calculate()" checked class="fin-toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer right-5"/>
+                        <label for="fin-tax-toggle" class="fin-toggle-label block overflow-hidden h-5 rounded-full bg-gray-200 cursor-pointer"></label>
+                    </div>
+                </div>
+
+                <!-- Live Conversions -->
+                <div class="grid grid-cols-2 gap-4 pt-1">
+                    <div>
+                        <p class="text-[0.7rem] text-gray-400 font-bold">台幣預估</p>
+                        <p id="fin-display-twd" class="text-lg font-black text-[#3E3E3E]">≈ NT$ 0</p>
+                    </div>
+                    <div>
+                        <p class="text-[0.7rem] text-gray-400 font-bold">預計退稅</p>
+                        <p id="fin-display-tax" class="text-lg font-black text-gray-300">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selections and Remarks -->
+            <div class="space-y-2">
+                <div class="flex gap-0">
+                    <select id="fin-purpose-select" class="w-1/2 p-3.5 border border-r-0 border-gray-100 rounded-l-2xl bg-white text-gray-500 font-bold text-xs focus:outline-none focus:ring-1 focus:ring-[#8FA2B0]/40">
+                        <option value="" disabled selected>請選擇用途</option>
+                        <option value="自用">🛒 自用</option>
+                        <option value="代購">📦 代購</option>
+                    </select>
+                    <select id="fin-category-select" class="w-1/2 p-3.5 border border-l-0 border-gray-100 rounded-r-2xl bg-white text-gray-500 font-bold text-xs focus:outline-none focus:ring-1 focus:ring-[#8FA2B0]/40">
+                        <option value="" disabled selected>請選擇類別</option>
+                        <option value="票券">🎟️ 票券</option>
+                        <option value="交通">🚃 交通</option>
+                        <option value="飲食">🍱 飲食</option>
+                        <option value="服飾">👕 服飾</option>
+                        <option value="藥妝">💊 藥妝</option>
+                        <option value="生活雜貨">🛍️ 生活雜貨</option>
+                        <option value="伴手禮">🎁 伴手禮</option>
+                        <option value="紀念品">⛩️ 紀念品</option>
+                        <option value="住宿">🏨 住宿</option>
+                        <option value="其他">✨ 其他</option>
+                    </select>
+                </div>
+                <div class="flex gap-2">
+                    <select id="fin-date-select" class="w-1/3 p-3.5 border border-gray-100 rounded-2xl bg-white text-gray-500 font-bold text-xs focus:outline-none focus:ring-1 focus:ring-[#8FA2B0]/40">
+                        <option value="" disabled selected>消費日期</option>
+                        <option value="6/2">6/2</option>
+                        <option value="6/3">6/3</option>
+                        <option value="6/4">6/4</option>
+                        <option value="6/5">6/5</option>
+                        <option value="6/6">6/6</option>
+                    </select>
+                    <input type="text" id="fin-remark-input" placeholder="備註 (選填)" class="w-2/3 p-3.5 border border-gray-100 rounded-2xl bg-white font-bold text-gray-500 text-xs focus:outline-none focus:ring-1 focus:ring-[#8FA2B0]/40">
+                </div>
+            </div>
+
+            <!-- Add/Update Button -->
+            <button id="fin-add-btn" onclick="BusanFinance.addRecord()" class="w-full bg-[#8FA2B0] text-white font-bold py-3.5 rounded-2xl shadow-sm hover:bg-[#8FA2B0]/90 transition-all text-xs tracking-wider">加入消費紀錄</button>
+
+            <!-- History List Header -->
+            <div class="flex justify-between items-center pt-2">
+                <h3 class="text-xs font-bold text-gray-400 tracking-wider">歷史消費清單</h3>
+                <button onclick="BusanFinance.clearRecords()" class="text-xs font-bold text-[#C8B1B1] hover:underline">全部清空</button>
+            </div>
+            <!-- Dynamic History List -->
+            <div id="fin-history-list" class="space-y-3">
+                <!-- Items will be injected dynamically -->
+            </div>
+        </div>
+
+        <!-- Sticky Footer Summary Inside the Drawer -->
+        <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 py-3.5 px-5 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] z-40">
+            <div class="flex items-stretch justify-between">
+                <!-- Left: KRW Total -->
+                <div class="w-1/2 text-left flex flex-col justify-between">
+                    <div>
+                        <p class="text-[0.65rem] font-bold text-gray-400">韓幣總累計</p>
+                        <p id="fin-total-krw" class="text-base font-black text-gray-700 mt-0.5">₩0</p>
+                    </div>
+                    <div class="mt-1">
+                        <span id="fin-total-tax" class="inline-block bg-[#A2AEA0]/10 text-[#A2AEA0] font-bold px-2 py-0.5 rounded-full text-[0.65rem]">預計退 ₩0</span>
+                    </div>
+                </div>
+                <!-- Separation line -->
+                <div class="border-r border-gray-100 mx-3"></div>
+                <!-- Right: TWD Total -->
+                <div class="w-1/2 text-right flex flex-col justify-center">
+                    <p class="text-[0.65rem] font-bold text-gray-400">台幣總累計</p>
+                    <p id="fin-total-twd" class="text-base font-black text-gray-700 mt-0.5">NT$ 0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消費統計總覽抽屜 (Summary Drawer) - 新增之收合側邊抽屜 -->
+    <div id="summary-drawer" class="fin-drawer">
+        <!-- Drawer Header -->
+        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-[#FAF9F6] rounded-t-20">
+            <div class="flex items-center space-x-2">
+                <span class="text-xs bg-[#8FA2B0] text-white px-2 py-0.5 rounded font-bold eng-text">STAT</span>
+                <h2 class="text-sm font-bold text-gray-700">消費統計總覽</h2>
+            </div>
+            <button onclick="toggleSummaryDrawer(false)" class="text-gray-400 hover:text-gray-600 p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Drawer Content (Scrollable) -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar pb-10">
+            <!-- Date Filter Row -->
+            <div class="flex items-center justify-between bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
+                <span class="text-xs font-bold text-gray-500">篩選日期</span>
+                <select id="sum-date-filter" onchange="BusanFinance.renderSummary()" class="p-2 border border-gray-100 rounded-xl bg-[#FAF9F6] text-gray-600 font-bold text-xs focus:outline-none focus:ring-1 focus:ring-[#8FA2B0]">
+                    <option value="ALL">全部日期 (6/2 - 6/6)</option>
+                    <option value="6/2">6/2 (DAY 1)</option>
+                    <option value="6/3">6/3 (DAY 2)</option>
+                    <option value="6/4">6/4 (DAY 3)</option>
+                    <option value="6/5">6/5 (DAY 4)</option>
+                    <option value="6/6">6/6 (DAY 5)</option>
+                </select>
+            </div>
+
+            <!-- Dynamic Summary Sections (自用與代購分流呈現) -->
+            <div id="summary-dynamic-content" class="space-y-4">
+                <!-- Content will be injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 記帳專屬彈出式訊息提示（替代原生 alert） -->
+    <div id="fin-alert-modal" class="fixed inset-0 bg-black/40 hidden flex items-center justify-center p-4 z-[60]">
+        <div class="bg-white rounded-3xl p-5 max-w-xs w-full text-center shadow-2xl">
+            <div class="w-10 h-10 rounded-full bg-[#C8B1B1]/10 flex items-center justify-center mx-auto mb-3">
+                <svg class="w-5 h-5 text-[#C8B1B1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+            </div>
+            <h3 class="text-sm font-bold text-gray-700 mb-1">提示</h3>
+            <p id="fin-alert-message" class="text-xs text-gray-400 mb-5 leading-relaxed"></p>
+            <button onclick="BusanFinance.closeAlert()" class="w-full bg-[#8FA2B0] hover:bg-[#8FA2B0]/90 text-white font-bold py-2.5 rounded-xl transition-all text-xs">確定</button>
+        </div>
+    </div>
+
+    <!-- 記帳專屬彈出式確認視窗（替代原生 confirm） -->
+    <div id="fin-confirm-modal" class="fixed inset-0 bg-black/40 hidden flex items-center justify-center p-4 z-[60]">
+        <div class="bg-white rounded-3xl p-5 max-w-xs w-full text-center shadow-2xl">
+            <div class="w-10 h-10 rounded-full bg-[#C8B1B1]/10 flex items-center justify-center mx-auto mb-3">
+                <svg class="w-5 h-5 text-[#C8B1B1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </div>
+            <h3 id="fin-confirm-title" class="text-sm font-bold text-gray-700 mb-1">確定清空？</h3>
+            <p id="fin-confirm-desc" class="text-xs text-gray-400 mb-5 leading-relaxed">此動作將永久刪除所有歷史消費紀錄。</p>
+            <div class="flex gap-2.5">
+                <button onclick="BusanFinance.closeConfirm(false)" class="w-1/2 bg-gray-100 hover:bg-gray-200 text-gray-500 font-bold py-2.5 rounded-xl transition-all text-xs">取消</button>
+                <button onclick="BusanFinance.closeConfirm(true)" class="w-1/2 bg-[#C8B1B1] hover:bg-[#C8B1B1]/90 text-white font-bold py-2.5 rounded-xl transition-all text-xs">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const travelDatabase = {
+        '6/2': {
+            title: 'DAY 1',
+            itinerary: `
+                <div class="space-y-6">
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#8FA2B0]/15 text-[#8FA2B0] mb-1.5">【下午】</span>
+                            <p class="eng-text text-sm text-[#7E7E7E] mt-0.5">17:05</p>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">降落抵達金海國際機場第一航廈</p>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#C8B1B1]/15 text-[#C8B1B1] mb-1.5">【下午】</span>
+                            <p class="eng-text text-sm text-[#7E7E7E] mt-0.5">18:15</p>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">飯店辦理入住</p>
+                            <p class="text-xs text-gray-400 mt-1 eng-text">Two H Hotel</p>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#C8B1B1]/15 text-[#C8B1B1] mb-1.5">【晚上】</span>
+                            <p class="eng-text text-sm text-[#7E7E7E] mt-0.5">19:00</p>
+                            <p class="text-[0.95rem] font-semibold mt-0.5 mb-2">西面商圈</p>
+                            <div class="space-y-2 text-[0.85rem] text-gray-600 pl-1">
+                                <p class="flex items-center justify-between">
+                                    <span>• 晚餐：英子麵店</span>
+                                    <span class="text-xs text-gray-400 eng-text">(至 20:00)</span>
+                                </p>
+                                <p class="flex items-center justify-between">
+                                    <span>• MUSINSA STANDARD</span>
+                                    <span class="text-xs text-gray-400 eng-text">(至 22:00)</span>
+                                </p>
+                                <p class="flex items-center justify-between">
+                                    <span>• 西面藥局</span>
+                                    <span class="text-xs text-gray-400 eng-text">(至 23:00)</span>
+                                </p>
+                                <p class="flex items-center justify-between">
+                                    <span>• Gachya Ocean 轉蛋店</span>
+                                    <span class="text-xs text-gray-400 eng-text">(至 23:00)</span>
+                                </p>
+                                <p class="flex items-center justify-between">
+                                    <span>• Olive Young</span>
+                                    <span class="text-xs text-gray-400 eng-text">(至 23:00)</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            supplement: `
+                <div class="info-card">
+                    <h3 class="supplement-title">晚餐備案</h3>
+                    <p class="text-[0.82rem] text-gray-600 flex justify-between items-center">
+                        <span>Seomyeon Milmyeon 西面冷麵</span>
+                        <span class="text-xs text-gray-400 eng-text">(至 21:00)</span>
+                    </p>
+                </div>
+                
+                <div class="info-card">
+                    <h3 class="supplement-title">交通指引</h3>
+                    <div class="space-y-3 text-[0.82rem] text-gray-600">
+                        <div>
+                            <p class="font-semibold text-gray-700">機場換錢</p>
+                            <p class="mt-0.5">航廈對面輕軌處 Money Box。</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-700">搭乘 Uber</p>
+                            <p class="mt-0.5">1 樓 GATE 1 門走出去，不用過馬路，往左轉走過 1 號站牌。</p>
+                        </div>
+                        <div class="border-t border-gray-100 pt-2 mt-2">
+                            <p class="mt-0.5">• 飯店 ➔ 英子麵店：搭乘計程車</p>
+                            <p class="mt-0.5">• 西面商圈內部：步行</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="supplement-title">地址資訊</h3>
+                    <div class="text-[0.82rem] text-gray-600">
+                        <p class="font-semibold text-gray-700">Two H Hotel</p>
+                        <p class="mt-0.5 select-all text-xs">동구 조방로38번길 7-1, 동구</p>
+                    </div>
+                </div>
+            `
+        },
+        '6/3': {
+            title: 'DAY 2',
+            itinerary: `
+                <div class="space-y-6">
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#8FA2B0]/15 text-[#8FA2B0] mb-1.5">【上午】</span>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">早餐：超商</p>
+                            <div class="mt-2.5">
+                                <p class="text-xs text-gray-400 eng-text">09:30</p>
+                                <p class="text-[0.95rem] font-semibold mt-0.5">Skyline Luge 排隊換票進場</p>
+                                <p class="text-[0.8rem] text-gray-400 mt-0.5">票券：KKDAY</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#A2AEA0]/15 text-[#A2AEA0] mb-1.5">【午餐】</span>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">午餐：Shake Shack</p>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#8FA2B0]/15 text-[#8FA2B0] mb-1.5">【下午】</span>
+                            <div class="space-y-1.5 text-[0.85rem] text-gray-600 pl-1 mt-0.5">
+                                <p>• 新世界百貨</p>
+                                <p>• 廣安里海灘 <span class="text-xs text-gray-400">(視天氣待 1 小時)</span></p>
+                                <p>• 咖啡廳：mirukku</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#C8B1B1]/15 text-[#C8B1B1] mb-1.5">【晚上】</span>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">晚餐：Tonshou 炸豬排</p>
+                            <p class="text-xs text-gray-400 mt-1">※ 提醒：11:00 catch table 搶號</p>
+                            <div class="space-y-1 text-[0.85rem] text-gray-600 pl-1 mt-2.5">
+                                <p class="flex items-center justify-between">
+                                    <span>• Object 旗艦店</span>
+                                    <span class="text-xs text-gray-400 eng-text">(至 21:00)</span>
+                                </p>
+                                <p class="flex items-center justify-between">
+                                    <span>• Twin Étoile</span>
+                                    <span class="text-xs text-gray-400 eng-text">(至 21:00)</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            supplement: `
+                <div class="info-card">
+                    <h3 class="supplement-title">景點資訊</h3>
+                    <div class="space-y-1 text-[0.82rem] text-gray-600">
+                        <p class="font-semibold text-gray-700">新世界百貨 樓層介紹</p>
+                        <a href="https://bobbytravel.tw/shinsegae-centum-city/" target="_blank" class="inline-block mt-0.5 text-[#8FA2B0] hover:underline">
+                            ➔ 點擊查看樓層詳細指南網頁
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="supplement-title">晚餐備案</h3>
+                    <p class="text-[0.82rem] text-gray-600 flex justify-between items-center">
+                        <span>水邊最高豬肉湯飯 (廣安里店)</span>
+                    </p>
+                </div>
+                
+                <div class="info-card">
+                    <h3 class="supplement-title">交通指引</h3>
+                    <div class="space-y-3 text-[0.82rem] text-gray-600">
+                        <div>
+                            <p class="mt-1">• 飯店 ➔ 滑車場：搭乘計程車</p>
+                            <p class="mt-1">• 滑車場 ➔ 新世界百貨：搭乘計程車</p>
+                            <p class="mt-1">• 廣安里 ➔ 西面：搭乘地鐵 2 號線 <span class="text-xs text-gray-400">(避開塞車)</span></p>
+                        </div>
+                    </div>
+                </div>
+            `
+        },
+        '6/4': {
+            title: 'DAY 3',
+            itinerary: `
+                <div class="space-y-6">
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#8FA2B0]/15 text-[#8FA2B0] mb-1.5">【上午】</span>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">早午餐：working holiday</p>
+                            <div class="space-y-1 text-[0.85rem] text-gray-600 pl-1 mt-1.5">
+                                <p>• T1 BASE CAMP</p>
+                                <p>• IN THE STREET</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#A2AEA0]/15 text-[#A2AEA0] mb-1.5">【午餐】</span>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">午餐：嚴湧帛豬肉湯飯海雲台店</p>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#A2AEA0]/15 text-[#A2AEA0] mb-1.5">【下午】</span>
+                            <div class="space-y-3.5 mt-0.5 pl-1">
+                                <div>
+                                    <p class="text-xs text-gray-400 eng-text">14:00 - 14:30</p>
+                                    <p class="text-[0.95rem] font-semibold">抵達膠囊列車尾浦站排隊報到</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400 eng-text">15:00</p>
+                                    <p class="text-[0.95rem] font-semibold">發車 <span class="text-xs text-gray-400 font-normal">(尾浦 ➔ 青沙浦)</span></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400 eng-text">16:30</p>
+                                    <p class="text-[0.95rem] font-semibold">發車 <span class="text-xs text-gray-400 font-normal">(青沙浦 ➔ 尾浦)</span></p>
+                                </div>
+                                <div class="border-t border-gray-100 pt-3">
+                                    <p class="text-xs text-gray-400 eng-text">17:30</p>
+                                    <p class="text-[0.95rem] font-semibold text-gray-800">Keveren House 小蛋糕</p>
+                                    <p class="text-[0.8rem] text-gray-500 mt-1">※ 上午可先至店內詢問是否可先付費保留</p>
+                                    <p class="text-[0.8rem] text-gray-600 font-medium mt-0.5">• 八入 * 3、六入 * 1</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#C8B1B1]/15 text-[#C8B1B1] mb-1.5">【晚上】</span>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">晚餐：Old Mansion 燒肉 (現場候位)</p>
+                            <div class="space-y-1 text-[0.85rem] text-gray-600 pl-1 mt-2">
+                                <p class="flex items-center justify-between">
+                                    <span>• Made By</span>
+                                    <span class="text-xs text-gray-400 eng-text">(至 21:00)</span>
+                                </p>
+                                <p class="flex items-center justify-between">
+                                    <span>• BYTP 拍貼機</span>
+                                    <span class="text-xs text-gray-400 eng-text">(24H)</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            supplement: `
+                <div class="info-card">
+                    <h3 class="supplement-title">早餐備案</h3>
+                    <p class="text-[0.82rem] text-gray-600">standardbread</p>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="supplement-title">景點與拍照資訊</h3>
+                    <div class="space-y-1.5 text-[0.82rem] text-gray-600">
+                        <p class="font-semibold text-gray-700">📸 膠囊/海岸列車拍照技巧</p>
+                        <a href="https://www.threads.com/@bbbbbbbblair.bb/post/DYY8QAJGHoS?xmt=AQG07K3uev7z0XGDFCgtleeKVtEpx2aMe3W0hx1Zcetgug" target="_blank" class="inline-block text-[#8FA2B0] hover:underline">
+                            ➔ 點擊查看列車拍照技巧 (Threads)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="supplement-title">有餘裕時間備選</h3>
+                    <div class="space-y-3 text-[0.82rem] text-gray-600">
+                        <div>
+                            <p class="font-semibold text-gray-700">青沙浦咖啡廳</p>
+                            <p class="mt-0.5">• cafe.broni (브로니)</p>
+                            <p class="mt-0.5">• diart coffee (디아트커피)</p>
+                        </div>
+                        <div class="border-t border-gray-100 pt-2.5">
+                            <p class="font-semibold text-gray-700">畫展：Werner Bronkhorst</p>
+                            <p class="text-xs text-gray-500 mt-0.5">地點：Grand Josun Busan Hotel 4F (海雲台)</p>
+                            <a href="https://www.klook.com/zh-TW/activity/182136-werner-bronxhorst-the-world-s-a-canvas-exhibition-ticket-in-busan/" target="_blank" class="inline-block mt-1 text-[#8FA2B0] hover:underline">
+                                ➔ 點我前往 Klook 預訂連結 (需前一天訂購)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <h3 class="supplement-title">交通指引</h3>
+                    <div class="space-y-3 text-[0.82rem] text-gray-600">
+                        <div>
+                            <p class="mt-1.5">• 飯店 ➔ working holiday：搭乘計程車</p>
+                            <p class="mt-1">• 上午行程：步行</p>
+                            <p class="mt-1">• 嚴湧帛豬肉湯飯 ➔ 膠囊列車：搭乘計程車</p>
+                            <p class="mt-1">• 青沙浦 ➔ 咖啡廳：步行</p>
+                            <p class="mt-1">• 其餘路段：搭乘計程車</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        },
+        '6/5': {
+            title: 'DAY 4',
+            itinerary: `
+                <div class="space-y-6">
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#8FA2B0]/15 text-[#8FA2B0] mb-1.5">【上午】</span>
+                            <p class="text-xs text-gray-400 eng-text">09:00</p>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">早午餐 curve share</p>
+                            <div class="space-y-1 text-[0.85rem] text-gray-600 pl-1 mt-2">
+                                <p>• 柯達南浦洞旗艦店</p>
+                                <p>• EPT 釜山光復店 (鞋子)</p>
+                                <p>• I LOVE MUSIC (專輯)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#A2AEA0]/15 text-[#A2AEA0] mb-1.5">【午餐】</span>
+                            <p class="text-[0.95rem] font-semibold mt-0.5">午餐：富平罐頭市場、BIFF 廣場</p>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#A2AEA0]/15 text-[#A2AEA0] mb-1.5">【下午】</span>
+                            <div class="space-y-3 mt-0.5 pl-1">
+                                <div>
+                                    <p class="text-xs text-[#7E7E7E] eng-text">13:30 - 16:30</p>
+                                    <p class="text-[0.95rem] font-semibold mt-0.5">ARTE MUSEUM Busan</p>
+                                </div>
+                                <div class="border-t border-gray-100 pt-2.5">
+                                    <p class="text-xs text-[#7E7E7E] eng-text">17:00 - 18:30</p>
+                                    <p class="text-[0.95rem] font-semibold mt-0.5">白淺灘文化村</p>
+                                    <p class="text-xs text-gray-500 mt-1">※ 視天氣待 1 小時拍照看夕陽</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#C8B1B1]/15 text-[#C8B1B1] mb-1.5">【晚上】</span>
+                            <div class="space-y-3 mt-0.5 pl-1">
+                                <div>
+                                    <p class="text-[0.95rem] font-semibold text-gray-800">Bracket Table</p>
+                                    <p class="text-[0.8rem] text-gray-500 mt-1">※ 12:00-20:00，餐具店關門早，下車首站衝這裡</p>
+                                </div>
+                                <div class="border-t border-gray-100 pt-2.5">
+                                    <p class="text-[0.95rem] font-semibold text-gray-800">晚餐：Solsot 釜飯</p>
+                                    <p class="text-xs text-gray-400 mt-0.5">(至 21:00)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            supplement: `
+                <div class="info-card">
+                    <h3 class="supplement-title">Arte Museum X BTS The City Arirang</h3>
+                    <p class="text-xs text-gray-600 font-semibold mt-1">6/5開展首日，現場排隊入場</p>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="supplement-title">寄物資訊</h3>
+                    <p class="text-[0.82rem] text-gray-600">
+                        SPAO 寄物區 或 南浦站置物櫃
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="supplement-title">景點與拍照資訊</h3>
+                    <div class="space-y-2 text-[0.82rem] text-gray-600">
+                        <p class="font-semibold text-gray-700">📸 白淺灘文化村</p>
+                        <a href="https://gemini.google.com/share/41969e4181c2" target="_blank" class="block text-[#8FA2B0] hover:underline">
+                            ➔ 點擊查看拍照點 1
+                        </a>
+                        <a href="https://www.instagram.com/reel/DIlU51GSFmt/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==" target="_blank" class="block text-[#8FA2B0] hover:underline">
+                            ➔ 點擊查看影片資料來源
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="supplement-title">晚餐備案</h3>
+                    <p class="text-[0.82rem] text-gray-600">
+                        辣炒年糕 (동대문엽기떡볶이 부산광복점)
+                    </p>
+                </div>
+                
+                <div class="info-card">
+                    <h3 class="supplement-title">交通指引</h3>
+                    <div class="space-y-3 text-[0.82rem] text-gray-600">
+                        <div>
+                            <p class="mt-1">• 飯店 ➔ curve share：搭乘公車</p>
+                            <p class="mt-1">• 南浦商圈：步行</p>
+                            <p class="mt-1">• 下午行程：搭乘計程車</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        },
+        '6/6': {
+            title: 'DAY 5',
+            itinerary: `
+                <div class="space-y-6">
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#A2AEA0]/15 text-[#A2AEA0] mb-1.5">【午餐】</span>
+                            <div class="space-y-4 mt-0.5">
+                                <div>
+                                    <p class="text-[0.95rem] font-semibold">午餐：Seomyeon Milmyeon 西面冷麵</p>
+                                    <p class="text-xs text-gray-400 mt-0.5">(至 21:00)</p>
+                                </div>
+                                <div class="border-t border-gray-100 pt-3">
+                                    <p class="text-[0.95rem] font-semibold">沒逛完的選物店補逛</p>
+                                </div>
+                                <div class="border-t border-gray-100 pt-3">
+                                    <p class="text-[0.95rem] font-semibold">咖啡廳2選1</p>
+                                    <div class="space-y-1 text-[0.85rem] text-gray-600 pl-1 mt-1.5">
+                                        <p>• Franklin Coffee</p>
+                                        <p>• Strut Coffee</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#A2AEA0]/15 text-[#A2AEA0] mb-1.5">【下午】</span>
+                            <div class="space-y-3.5 mt-0.5">
+                                <div>
+                                    <p class="text-xs text-[#7E7E7E] eng-text">15:30 前</p>
+                                    <p class="text-[0.95rem] font-semibold mt-0.5">飯店取行李 + 出發前往機場</p>
+                                </div>
+                                <div class="border-t border-gray-100 pt-3">
+                                    <p class="text-xs text-[#7E7E7E] eng-text">16:00 前</p>
+                                    <p class="text-[0.95rem] font-semibold mt-0.5">抵達機場</p>
+                                    <p class="text-xs text-gray-400 mt-1">辦理退稅、登機報到作業 (18:55 班機)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            supplement: `
+                <div class="info-card">
+                    <h3 class="supplement-title">前三日備選補逛清單</h3>
+                    <p class="text-xs text-gray-400 mb-2">※ 若前三日行程太緊湊來不及逛，可安排於今日補逛：</p>
+                    <div class="space-y-1.5 text-[0.82rem] text-gray-600 pl-1">
+                        <p>• Object 旗艦店</p>
+                        <p>• Twin Étoile</p>
+                        <p>• Made By</p>
+                        <p>• Bracket Table</p>
+                        <p>• BYTP 拍貼機</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="supplement-title">交通指引</h3>
+                    <div class="space-y-3 text-[0.82rem] text-gray-600">
+                        <div>
+                            <p class="mt-1">• 飯店 ➔ 機場：搭乘計程車</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        }
+    };
+
+    let activeDateKey = '6/2';
+
+    // 切換天數控制
+    function switchDay(dateKey) {
+        activeDateKey = dateKey;
+        const buttons = document.querySelectorAll('.nav-btn');
+        buttons.forEach(btn => {
+            if (btn.textContent === dateKey) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        const data = travelDatabase[dateKey];
+        if (data) {
+            document.getElementById('current-day-header').innerText = data.title;
+            document.getElementById('itinerary-content-area').innerHTML = data.itinerary;
+            document.getElementById('supplement-content-area').innerHTML = data.supplement;
+            
+            document.getElementById('itinerary-content-area').scrollTop = 0;
+            document.getElementById('supplement-content-area').scrollTop = 0;
+        }
+    }
+
+    // AI 抽屜開關
+    function toggleAIDrawer(isOpen) {
+        const drawer = document.getElementById('ai-drawer');
+        const finDrawer = document.getElementById('fin-drawer');
+        const sumDrawer = document.getElementById('summary-drawer');
+        if (isOpen) {
+            // 互斥邏輯：開啟 AI 助理時，關閉其餘抽屜
+            if (finDrawer && finDrawer.classList.contains('open')) {
+                toggleFinanceDrawer(false);
+            }
+            if (sumDrawer && sumDrawer.classList.contains('open')) {
+                toggleSummaryDrawer(false);
+            }
+            drawer.classList.add('open');
+        } else {
+            drawer.classList.remove('open');
+        }
+    }
+
+    // 記帳與匯率換算抽屜開關
+    function toggleFinanceDrawer(isOpen) {
+        const finDrawer = document.getElementById('fin-drawer');
+        const aiDrawer = document.getElementById('ai-drawer');
+        const sumDrawer = document.getElementById('summary-drawer');
+        if (isOpen) {
+            // 互斥邏輯：開啟記帳工具時，關閉其餘抽屜
+            if (aiDrawer && aiDrawer.classList.contains('open')) {
+                toggleAIDrawer(false);
+            }
+            if (sumDrawer && sumDrawer.classList.contains('open')) {
+                toggleSummaryDrawer(false);
+            }
+            finDrawer.classList.add('open');
+            BusanFinance.updateUI(); // 自動重新整理介面累計數據
+        } else {
+            finDrawer.classList.remove('open');
+        }
+    }
+
+    // 消費統計總覽抽屜開關 (互斥性與動態載入)
+    function toggleSummaryDrawer(isOpen) {
+        const sumDrawer = document.getElementById('summary-drawer');
+        const finDrawer = document.getElementById('fin-drawer');
+        const aiDrawer = document.getElementById('ai-drawer');
+        if (isOpen) {
+            // 互斥邏輯：開啟統計抽屜時，收起其餘抽屜
+            if (aiDrawer && aiDrawer.classList.contains('open')) {
+                toggleAIDrawer(false);
+            }
+            if (finDrawer && finDrawer.classList.contains('open')) {
+                toggleFinanceDrawer(false);
+            }
+            sumDrawer.classList.add('open');
+            BusanFinance.renderSummary(); // 動態進行即時聚合運算並渲染
+        } else {
+            sumDrawer.classList.remove('open');
+        }
+    }
+
+    // 呼叫 Gemini 服務
+    async function callGemini(userQuery, systemInstructions) {
+        let apiKey = document.getElementById('custom-api-key').value.trim();
+        if (!apiKey) {
+            apiKey = ""; 
+        }
+
+        // 使用 Canvas 環境與一般通用最支援的 gemini-2.5-flash-preview-09-2025 模型
+        const model = "gemini-2.5-flash-preview-09-2025";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+        const payload = {
+            contents: [{ parts: [{ text: userQuery }] }],
+            systemInstruction: {
+                parts: [{ text: systemInstructions }]
+            }
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || "無法連結至 API 端點");
+            }
+
+            const result = await response.json();
+            const candidate = result.candidates?.[0];
+            if (candidate && candidate.content?.parts?.[0]?.text) {
+                return candidate.content.parts[0].text;
+            } else {
+                return "AI 助理目前沒有產生有效的文字，請再試一次。";
+            }
+        } catch (error) {
+            console.error("Gemini API Error:", error);
+            return `連線失敗。\n若您不在 Canvas 沙盒環境中，請展開下方「自訂 API 金鑰設定」並貼上您的 Gemini API Key 以利調用。\n\n詳細錯誤訊息: ${error.message}`;
+        }
+    }
+
+    // 複製回覆至剪貼簿
+    function copyResponse() {
+        const textElement = document.getElementById('ai-response-content');
+        const range = document.createRange();
+        range.selectNode(textElement);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        
+        try {
+            document.execCommand('copy');
+            BusanFinance.showAlert('文字已成功複製至剪貼簿！');
+        } catch (err) {
+            BusanFinance.showAlert('複製失敗，請手動全選文字複製。');
+        }
+        window.getSelection().removeAllRanges();
+    }
+
+    async function askPreset(type) {
+        const responseContainer = document.getElementById('ai-response-container');
+        const responseContent = document.getElementById('ai-response-content');
+        
+        responseContainer.classList.remove('hidden');
+        responseContent.innerHTML = "🧙‍♂️ 正在調用在地旅遊達人腦袋，為您規劃中...";
+
+        const todayData = travelDatabase[activeDateKey];
+        const itineraryContext = todayData ? todayData.itinerary : "無今日特定行程";
+        const supplementContext = todayData ? todayData.supplement : "無補充說明";
+
+        let systemInstructions = `你是一位精通韓國釜山旅遊的在地旅遊規劃大師。我們正在進行一趟「五天四夜的釜山自由行」。
+目前我們正在瀏覽日期是：${activeDateKey} (${todayData ? todayData.title : ''})。
+今日安排的行程脈絡如下：
+【核心行程安排】: 
+${itineraryContext}
+
+【補充備案與交通】: 
+${supplementContext}
+
+請依照使用者的詢問，給予乾淨、精準、不囉唆的條列式回答。避免文學式的冗贅感性形容，並符合莫蘭迪簡約美學。`;
+
+        let userQuery = "";
+
+        if (type === 'food') {
+            userQuery = `請針對今日行程中安排的【所有餐廳與點餐】（包含備案餐廳、甜點店與小蛋糕店等），自動提供：
+1. 實用的韓文點餐對話（請附上英文拼音/注音發音輔助，以及中文對照說明，例如如何叫店員、結帳）。
+2. 在這些店最推薦的必點招牌與基本點餐範例（如果是韓文，請附上韓文與發音，方便我們直接手動比給店員看）。`;
+        } else if (type === 'taxi') {
+            userQuery = `請幫我整理今日行程中所提到的【飯店、餐廳、景點、地鐵站】。
+我需要你幫我列出他們的：
+1. 中文名稱
+2. 韓文名稱（方便給計程車司機導航、或輸入 Naver Map）
+3. 精確的韓文地址（如果行程中有提供，請使用行程中的；若沒有，請根據你在釜山在地的知識列出最經典、正確的地址，例如 Two H Hotel 的地址是: 동구 조방로38번길 7-1, 동구）
+請用非常乾淨的卡片清單形式整理，讓我可以直接複製貼上。`;
+        } else if (type === 'weather') {
+            userQuery = `今日行程如果有任何戶外行程（如 Luge 滑車、廣安里海灘、海岸與膠囊列車、白淺灘文化村等），若突然遇到「下雨」等不佳天氣：
+1. 請告訴我今天有哪幾個節點最容易受天氣影響。
+2. 針對 these 受影響的戶外行程，推薦「最鄰近、順路、且在西面、海雲台或影島南浦周邊」的室內替代備案（如室內展覽、新世界百貨室內活動、百貨汗蒸幕等， or 鄰近合適的雨天咖啡廳）。
+請以極度實用的應變方針呈現。`;
+        }
+
+        const aiResult = await callGemini(userQuery, systemInstructions);
+        responseContent.innerText = aiResult;
+    }
+
+    // 自由輸入對話
+    async function sendChatMessage() {
+        const inputField = document.getElementById('ai-chat-input');
+        const userMessage = inputField.value.trim();
+        if (!userMessage) return;
+
+        const responseContainer = document.getElementById('ai-response-container');
+        const responseContent = document.getElementById('ai-response-content');
+
+        responseContainer.classList.remove('hidden');
+        responseContent.innerHTML = "🧙‍♂️ 釜山達人思索中...";
+        inputField.value = ""; // 清空輸入框
+
+        const todayData = travelDatabase[activeDateKey];
+        const itineraryContext = todayData ? todayData.itinerary : "無今日特定行程";
+
+        let systemInstructions = `你是一位簡約極簡風釜山旅遊達人。
+我們目前正在安排的釜山自由行天數為：${activeDateKey}。
+今天的行程為：${itineraryContext}。
+請針對使用者的自由提問（可能是臨時改景點、交通疑難、或釜山地道飲食文化），給予客觀、最省時省力、條列分明的回答。不可說廢話。`;
+
+        const aiResult = await callGemini(userMessage, systemInstructions);
+        responseContent.innerText = aiResult;
+    }
+
+    document.getElementById('ai-chat-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendChatMessage();
+        }
+    });
+
+    // ==========================================
+    // 記帳與匯率換算專屬命名空間 (BusanFinance)
+    // ==========================================
+    const BusanFinance = {
+        records: JSON.parse(localStorage.getItem('kr_records') || '[]'),
+        rate: 47.89,
+        editIndex: -1,
+        confirmCallback: null,
+        
+        // 彈出式提醒 Modal (取代原生 alert)
+        showAlert(msg) {
+            document.getElementById('fin-alert-message').innerText = msg;
+            document.getElementById('fin-alert-modal').classList.remove('hidden');
+        },
+
+        closeAlert() {
+            document.getElementById('fin-alert-modal').classList.add('hidden');
+        },
+
+        // 彈出式確認視窗 Modal (取代原生 confirm)
+        showConfirm(callback, title = "確定清空？", desc = "此動作將永久刪除所有歷史消費紀錄。") {
+            this.confirmCallback = callback;
+            document.getElementById('fin-confirm-title').innerText = title;
+            document.getElementById('fin-confirm-desc').innerText = desc;
+            document.getElementById('fin-confirm-modal').classList.remove('hidden');
+        },
+
+        closeConfirm(result) {
+            document.getElementById('fin-confirm-modal').classList.add('hidden');
+            if (result && this.confirmCallback) {
+                this.confirmCallback();
+            }
+            this.confirmCallback = null;
+        },
+
+        // 計算匯率與退稅數值
+        calculate() {
+            const inputStr = document.getElementById('fin-amount-input').value.replace(/[^0-9+\-*/]/g, '');
+            try {
+                const amount = eval(inputStr) || 0;
+                const isTaxable = document.getElementById('fin-tax-toggle').checked;
+                const twd = Math.round(amount / this.rate);
+                const tax = (isTaxable && amount >= 15000) ? Math.floor(amount * 0.065) : 0;
+               
+                document.getElementById('fin-display-twd').innerText = `≈ NT$ ${twd.toLocaleString()}`;
+                document.getElementById('fin-display-tax').innerText = tax > 0 ? `₩${tax.toLocaleString()}` : '0';
+                document.getElementById('fin-display-tax').className = tax > 0 ? "text-lg font-black text-[#A2AEA0]" : "text-lg font-black text-gray-300";
+            } catch {
+                document.getElementById('fin-display-twd').innerText = `≈ NT$ 0`;
+                document.getElementById('fin-display-tax').innerText = '0';
+            }
+        },
+
+        // 新增與更新消費紀錄
+        addRecord() {
+            const amountStr = document.getElementById('fin-amount-input').value;
+            let amount = 0;
+            try {
+                amount = eval(amountStr.replace(/[^0-9+\-*/]/g, '')) || 0;
+            } catch(e) {
+                amount = 0;
+            }
+            const purpose = document.getElementById('fin-purpose-select').value;
+            const category = document.getElementById('fin-category-select').value;
+            const date = document.getElementById('fin-date-select').value;
+            const remark = document.getElementById('fin-remark-input').value;
+
+            if (amount > 0 && purpose && category && date) {
+                const twd = Math.round(amount / this.rate);
+                const tax = document.getElementById('fin-tax-toggle').checked && amount >= 15000 ? Math.floor(amount * 0.065) : 0;
+               
+                if (this.editIndex > -1) {
+                    // 更新編輯中的紀錄
+                    this.records[this.editIndex] = { amount, purpose, category, remark, twd, tax, date };
+                    this.editIndex = -1;
+                   
+                    // 還原按鈕樣式與文字
+                    const btn = document.getElementById('fin-add-btn');
+                    btn.innerText = "加入消費紀錄";
+                    btn.classList.remove('bg-[#A2AEA0]', 'hover:bg-[#A2AEA0]/90');
+                    btn.classList.add('bg-[#8FA2B0]', 'hover:bg-[#8FA2B0]/90');
+                } else {
+                    // 新增紀錄
+                    this.records.unshift({ amount, purpose, category, remark, twd, tax, date });
+                }
+               
+                localStorage.setItem('kr_records', JSON.stringify(this.records));
+               
+                // 自動清除輸入內容
+                document.getElementById('fin-amount-input').value = "0";
+                document.getElementById('fin-purpose-select').value = "";
+                document.getElementById('fin-category-select').value = "";
+                document.getElementById('fin-date-select').value = "";
+                document.getElementById('fin-remark-input').value = "";
+               
+                this.calculate();
+                this.updateUI();
+                this.renderSummary();
+            } else {
+                this.showAlert("請填寫完整資訊 (包含金額、用途、類別及消費日期)");
+            }
+        },
+
+        // 觸發編輯
+        editRecord(index) {
+            this.editIndex = index;
+            const r = this.records[index];
+           
+            // 填回輸入欄位
+            document.getElementById('fin-amount-input').value = r.amount;
+            document.getElementById('fin-purpose-select').value = r.purpose;
+            document.getElementById('fin-category-select').value = r.category;
+            document.getElementById('fin-date-select').value = r.date || '';
+            document.getElementById('fin-remark-input').value = r.remark || '';
+           
+            // 推算退稅開關狀態
+            if (r.amount >= 15000) {
+                document.getElementById('fin-tax-toggle').checked = r.tax > 0;
+            } else {
+                document.getElementById('fin-tax-toggle').checked = true;
+            }
+           
+            // 變更按鈕為更新狀態 (套用莫蘭迪茶鼠綠)
+            const btn = document.getElementById('fin-add-btn');
+            btn.innerText = "更新消費紀錄";
+            btn.classList.remove('bg-[#8FA2B0]', 'hover:bg-[#8FA2B0]/90');
+            btn.classList.add('bg-[#A2AEA0]', 'hover:bg-[#A2AEA0]/90');
+           
+            this.calculate();
+           
+            // 平滑捲動至抽屜頂端方便編輯
+            document.querySelector('#fin-drawer .overflow-y-auto').scrollTo({ top: 0, behavior: 'smooth' });
+        },
+
+        // 刪除消費紀錄
+        deleteRecord(index) {
+            this.showConfirm(() => {
+                BusanFinance.records.splice(index, 1);
+                localStorage.setItem('kr_records', JSON.stringify(BusanFinance.records));
+               
+                // 若刪除的是正在編輯的項目，則取消編輯狀態
+                if (BusanFinance.editIndex === index) {
+                    BusanFinance.editIndex = -1;
+                    const btn = document.getElementById('fin-add-btn');
+                    btn.innerText = "加入消費紀錄";
+                    btn.classList.remove('bg-[#A2AEA0]', 'hover:bg-[#A2AEA0]/90');
+                    btn.classList.add('bg-[#8FA2B0]', 'hover:bg-[#8FA2B0]/90');
+                } else if (BusanFinance.editIndex > index) {
+                    BusanFinance.editIndex--;
+                }
+               
+                BusanFinance.updateUI();
+                BusanFinance.renderSummary();
+            }, "確定刪除此筆紀錄？", "此動作將會永久移除該筆消費紀錄。");
+        },
+
+        // 刷新歷史清單與計算統計
+        updateUI() {
+            // 1. 刷新歷史清單
+            const list = document.getElementById('fin-history-list');
+            if (this.records.length === 0) {
+                list.innerHTML = `<div class="text-center py-6 text-gray-400 text-xs">尚無任何消費紀錄</div>`;
+            } else {
+                list.innerHTML = this.records.map((r, index) => `
+                    <div class="bg-white p-4 rounded-3xl border border-gray-100 flex items-center justify-between shadow-sm">
+                        <div class="flex gap-2.5 items-center">
+                            <!-- 顯示當初加入時所選取的日期 -->
+                            <div class="text-[0.65rem] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">${r.date || '未設定'}</div>
+                            <div>
+                                <p class="font-bold text-gray-700 text-xs">
+                                    ${r.category}
+                                    ${r.remark ? `<span class="text-[0.65rem] text-gray-400 font-normal ml-1">(${r.remark})</span>` : ''}
+                                </p>
+                                <p class="text-[0.65rem] text-[#8FA2B0] font-bold mt-0.5">${r.purpose} • ₩${r.amount.toLocaleString()}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="text-right">
+                                <p class="font-black text-gray-700 text-sm">NT$ ${r.twd.toLocaleString()}</p>
+                                <p class="text-[0.65rem] ${r.tax > 0 ? 'text-[#A2AEA0]' : 'text-gray-300'} font-bold">退 ₩${r.tax.toLocaleString()}</p>
+                            </div>
+                            <div class="flex gap-1.5 border-l border-gray-100 pl-2">
+                                <button onclick="BusanFinance.editRecord(${index})" class="text-gray-400 hover:text-[#8FA2B0] transition p-1" title="編輯">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                </button>
+                                <button onclick="BusanFinance.deleteRecord(${index})" class="text-gray-400 hover:text-[#C8B1B1] transition p-1" title="刪除">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // 2. 計算總額並更新底部看板
+            const totalKrw = this.records.reduce((sum, r) => sum + r.amount, 0);
+            const totalTwd = this.records.reduce((sum, r) => sum + r.twd, 0);
+            const totalTax = this.records.reduce((sum, r) => sum + r.tax, 0);
+
+            document.getElementById('fin-total-krw').innerText = `₩${totalKrw.toLocaleString()}`;
+            document.getElementById('fin-total-twd').innerText = `NT$ ${totalTwd.toLocaleString()}`;
+            document.getElementById('fin-total-tax').innerText = `預計退 ₩${totalTax.toLocaleString()}`;
+        },
+
+        // 全部清空歷史紀錄
+        clearRecords() {
+            this.showConfirm(() => {
+                BusanFinance.records = [];
+                localStorage.removeItem('kr_records');
+                BusanFinance.editIndex = -1;
+                
+                // 還原按鈕
+                const btn = document.getElementById('fin-add-btn');
+                btn.innerText = "加入消費紀錄";
+                btn.classList.remove('bg-[#A2AEA0]', 'hover:bg-[#A2AEA0]/90');
+                btn.classList.add('bg-[#8FA2B0]', 'hover:bg-[#8FA2B0]/90');
+               
+                BusanFinance.updateUI();
+                BusanFinance.renderSummary();
+            });
+        },
+
+        // 彙整與呈現多維度消費統計總覽 (自用與代購各類別合計)
+        renderSummary() {
+            const filterDate = document.getElementById('sum-date-filter').value;
+            
+            // 根據選定之日期進行過濾
+            const filteredRecords = this.records.filter(r => {
+                if (filterDate === 'ALL') return true;
+                return r.date === filterDate;
+            });
+
+            // 初始化容器
+            const categoriesByPurpose = { '自用': {}, '代購': {} };
+            const grandTotals = {
+                '自用': { krw: 0, twd: 0 },
+                '代購': { krw: 0, twd: 0 }
+            };
+
+            // 分流並加總各用途與各類別
+            filteredRecords.forEach(r => {
+                const purpose = r.purpose || '自用';
+                const category = r.category || '其他';
+                
+                if (!categoriesByPurpose[purpose][category]) {
+                    categoriesByPurpose[purpose][category] = { krw: 0, twd: 0 };
+                }
+                
+                categoriesByPurpose[purpose][category].krw += r.amount;
+                categoriesByPurpose[purpose][category].twd += r.twd;
+
+                grandTotals[purpose].krw += r.amount;
+                grandTotals[purpose].twd += r.twd;
+            });
+
+            const container = document.getElementById('summary-dynamic-content');
+            let html = '';
+
+            const purposes = ['自用', '代購'];
+            const icons = { '自用': '🛒', '代購': '📦' };
+            const colors = { '自用': '#8FA2B0', '代購': '#A2AEA0' }; // 與手札配色一致
+
+            // 組合輸出 HTML
+            purposes.forEach(p => {
+                const total = grandTotals[p];
+                const cats = categoriesByPurpose[p];
+                const catKeys = Object.keys(cats);
+
+                html += `
+                <div class="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm space-y-4">
+                    <!-- 用途小計標題列 -->
+                    <div class="flex justify-between items-center pb-2.5 border-b border-gray-100">
+                        <span class="text-sm font-black flex items-center" style="color: ${colors[p]}">
+                            <span class="mr-1.5">${icons[p]}</span>${p}
+                        </span>
+                        <div class="text-right">
+                            <span class="text-[0.65rem] text-gray-400 font-bold block">小計 (TWD)</span>
+                            <span class="text-sm font-black text-gray-700">NT$ ${total.twd.toLocaleString()}</span>
+                        </div>
+                    </div>
+
+                    <!-- 韓元折算 -->
+                    <div class="bg-[#FAF9F6] px-3 py-2 rounded-xl flex justify-between items-center border border-gray-50 text-[0.7rem]">
+                        <span class="font-bold text-gray-400">韓元小計</span>
+                        <span class="font-black text-gray-500">₩${total.krw.toLocaleString()}</span>
+                    </div>
+
+                    <!-- 該用途下所有消費類別明細 -->
+                    <div class="space-y-3 pt-1">
+                `;
+
+                if (catKeys.length === 0) {
+                    html += `<p class="text-center py-4 text-gray-300 text-xs font-semibold">該時段此用途無任何消費紀錄</p>`;
+                } else {
+                    catKeys.forEach(cat => {
+                        const catData = cats[cat];
+                        html += `
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="font-bold text-gray-600">${cat}</span>
+                            <div class="text-right">
+                                <span class="font-black text-gray-700 block">NT$ ${catData.twd.toLocaleString()}</span>
+                                <span class="text-[0.65rem] text-gray-400 font-bold">₩${catData.krw.toLocaleString()}</span>
+                            </div>
+                        </div>
+                        `;
+                    });
+                }
+
+                html += `
+                    </div>
+                </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+    };
+
+    // 初始化載入第一天 (6/2)
+    window.onload = function() {
+        switchDay('6/2');
+        BusanFinance.updateUI(); // 初始化載入記帳統計
+    };
+</script>
+</body>
+</html>
