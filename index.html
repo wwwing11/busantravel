@@ -146,7 +146,7 @@
             padding: 20px;
             overflow-y: auto;
             scrollbar-width: none;
-            flex-shrink: 0; /* 確保不會被上方內容排擠 */
+            flex-shrink: 0; /* 確保不會補上方內容排擠 */
             -webkit-overflow-scrolling: touch;
         }
         .supplement-section::-webkit-scrollbar {
@@ -216,7 +216,7 @@
             z-index: 50;
             display: flex;
             flex-direction: column;
-            padding-bottom: env(safe-area-inset-bottom, 0px);
+            /* 移除此處的 padding-bottom，改由內層 Sticky Footer 個別安全區接管，防止排版重疊 */
         }
 
         .fin-drawer.open {
@@ -236,7 +236,7 @@
 <body class="flex justify-center items-center h-screen">
 
 <div class="phone-container">
-    <!-- Header（已移除 AI 旅伴按鈕，呈現純淨極簡美感） -->
+    <!-- Header -->
     <div class="header-section">
         <h1 class="day-title" id="current-day-header">DAY 1</h1>
     </div>
@@ -292,8 +292,8 @@
             </button>
         </div>
 
-        <!-- Drawer Content (Scrollable) -->
-        <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar pb-36">
+        <!-- Drawer Content (Scrollable) - pb 調整至 44，防止最後一筆資料被升高的底部面板遮住 -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar pb-44">
             <!-- Rate Display -->
             <div class="bg-[#8FA2B0]/10 border border-[#8FA2B0]/20 p-4 rounded-2xl flex justify-between items-center">
                 <span class="text-[#8FA2B0] font-bold text-xs flex items-center">
@@ -386,8 +386,8 @@
             </div>
         </div>
 
-        <!-- Sticky Footer Summary Inside the Drawer -->
-        <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 py-3.5 px-5 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] z-40">
+        <!-- Sticky Footer Summary Inside the Drawer - 引入 env(safe-area-inset-bottom) 自適應 iPhone 安全邊距 -->
+        <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 pt-3.5 pb-[calc(14px+env(safe-area-inset-bottom,16px))] px-5 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] z-40">
             <div class="flex items-stretch justify-between">
                 <!-- Left: KRW Total -->
                 <div class="w-1/2 text-left flex flex-col justify-between">
@@ -777,7 +777,7 @@
                             <p class="text-xs text-gray-400 eng-text">09:00</p>
                             <p class="text-[0.95rem] font-semibold mt-0.5">早午餐 curve share</p>
                             <div class="space-y-1 text-[0.85rem] text-gray-600 pl-1 mt-2">
-                                <p>• 柯達南浦洞旗慢店</p>
+                                <p>• 柯達南浦洞慢旗店</p>
                                 <p>• EPT 釜山光復店 (鞋子)</p>
                                 <p>• I LOVE MUSIC (專輯)</p>
                             </div>
@@ -814,7 +814,7 @@
                             <div class="space-y-3 mt-0.5 pl-1">
                                 <div>
                                     <p class="text-[0.95rem] font-semibold text-gray-800">Bracket Table</p>
-                                    <p class="text-[0.8rem] text-gray-500 mt-1">※ 12:00-20:00，餐具店關門早，下車首站衝這裡</p>
+                                    <p class="text-[0.8rem] text-gray-500 mt-1">※ 12:00-20:00，餐具店關慢早，下車首站衝這裡</p>
                                 </div>
                                 <div class="border-t border-gray-100 pt-2.5">
                                     <p class="text-[0.95rem] font-semibold text-gray-800">晚餐：Solsot 釜飯</p>
