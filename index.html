@@ -191,29 +191,6 @@
             font-weight: 700;
         }
 
-        /* AI 抽屜樣式 - 針對 iOS 適應防超出 */
-        .ai-drawer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 85%;
-            background: #FAF9F6;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            box-shadow: 0 -8px 30px rgba(0,0,0,0.08);
-            transform: translateY(100%);
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 50;
-            display: flex;
-            flex-direction: column;
-            padding-bottom: env(safe-area-inset-bottom, 0px);
-        }
-
-        .ai-drawer.open {
-            transform: translateY(0);
-        }
-
         /* 滾動條隱藏 */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -259,17 +236,9 @@
 <body class="flex justify-center items-center h-screen">
 
 <div class="phone-container">
-    <!-- Header -->
+    <!-- Header（已移除 AI 旅伴按鈕，呈現純淨極簡美感） -->
     <div class="header-section">
         <h1 class="day-title" id="current-day-header">DAY 1</h1>
-        
-        <!-- AI 門戶按鈕 -->
-        <button onclick="toggleAIDrawer(true)" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#8FA2B0]/10 text-[#8FA2B0] hover:bg-[#8FA2B0]/20 transition-all text-xs font-semibold">
-            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2L14.8 8.4L21.2 11.2L14.8 14L12 20.4L9.2 14L2.8 11.2L9.2 8.4L12 2Z" />
-            </svg>
-            <span>AI 旅伴</span>
-        </button>
     </div>
 
     <!-- 滾動內容包裝容器 -->
@@ -285,15 +254,15 @@
         </div>
     </div>
 
-    <!-- 消費統計總覽懸浮按鈕 (FAB) - 移除 bounce 類別，使其保持精緻靜止狀態 -->
-    <button onclick="toggleSummaryDrawer(true)" class="absolute bottom-36 right-4 w-12 h-12 rounded-full bg-[#8FA2B0] text-white shadow-lg flex items-center justify-center hover:bg-[#8FA2B0]/90 transition-all z-40" title="消費統計總覽">
+    <!-- 消費統計總覽懸浮按鈕 (FAB) - 往上調整定位，解決實機遮擋問題 -->
+    <button onclick="toggleSummaryDrawer(true)" class="absolute bottom-44 right-4 w-12 h-12 rounded-full bg-[#8FA2B0] text-white shadow-lg flex items-center justify-center hover:bg-[#8FA2B0]/90 transition-all z-40" title="消費統計總覽">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
         </svg>
     </button>
 
-    <!-- 記帳與匯率懸浮按鈕 (FAB) -->
-    <button onclick="toggleFinanceDrawer(true)" class="absolute bottom-20 right-4 w-12 h-12 rounded-full bg-[#A2AEA0] text-white shadow-lg flex items-center justify-center hover:bg-[#A2AEA0]/90 transition-all z-40" title="記帳與換算">
+    <!-- 記帳與匯率懸浮按鈕 (FAB) - 往上調整定位，解決實機遮擋問題 -->
+    <button onclick="toggleFinanceDrawer(true)" class="absolute bottom-28 right-4 w-12 h-12 rounded-full bg-[#A2AEA0] text-white shadow-lg flex items-center justify-center hover:bg-[#A2AEA0]/90 transition-all z-40" title="記帳與換算">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -306,84 +275,6 @@
         <span class="nav-btn" onclick="switchDay('6/4')">6/4</span>
         <span class="nav-btn" onclick="switchDay('6/5')">6/5</span>
         <span class="nav-btn" onclick="switchDay('6/6')">6/6</span>
-    </div>
-
-    <!-- AI Drawer Panel -->
-    <div id="ai-drawer" class="ai-drawer">
-        <!-- Drawer Header -->
-        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-[#FAF9F6] rounded-t-20">
-            <div class="flex items-center space-x-2">
-                <span class="text-xs bg-[#8FA2B0] text-white px-2 py-0.5 rounded font-bold eng-text">AI</span>
-                <h2 class="text-sm font-bold text-gray-700">釜山智能旅伴</h2>
-            </div>
-            <button onclick="toggleAIDrawer(false)" class="text-gray-400 hover:text-gray-600 p-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Drawer Content -->
-        <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar">
-            <!-- Context Banner -->
-            <div class="p-3 rounded-lg bg-[#EAE6E1]/40 border border-[#EAE6E1] text-xs text-gray-600">
-                💡 助理已為您載入今日行程資訊，可提供專屬的韓文翻譯、點餐溝通、交通及天氣備案。
-            </div>
-
-            <!-- Predefined AI Prompts -->
-            <div class="space-y-2">
-                <h3 class="text-[0.75rem] font-bold text-gray-400 tracking-wider">今日快捷助手</h3>
-                <div class="grid grid-cols-1 gap-2">
-                    <button onclick="askPreset('food')" class="text-left p-3 rounded-lg bg-white border border-gray-100 hover:border-[#8FA2B0]/40 transition-all text-xs text-gray-700 hover:shadow-sm">
-                        <p class="font-bold text-[#8FA2B0] mb-0.5">💡 點餐與韓文溝通助手</p>
-                        <p class="text-gray-400 text-[0.7rem] leading-normal">自動為今日安排的餐點與餐廳，生成實用的對話與韓文菜單發音。</p>
-                    </button>
-                    <button onclick="askPreset('taxi')" class="text-left p-3 rounded-lg bg-white border border-gray-100 hover:border-[#8FA2B0]/40 transition-all text-xs text-gray-700 hover:shadow-sm">
-                        <p class="font-bold text-[#A2AEA0] mb-0.5">🚕 運將複製貼上助手</p>
-                        <p class="text-gray-400 text-[0.7rem] leading-normal">整理今日所有飯店與景點的韓文名稱與地址，方便直接秀給司機看。</p>
-                    </button>
-                    <button onclick="askPreset('weather')" class="text-left p-3 rounded-lg bg-white border border-gray-100 hover:border-[#8FA2B0]/40 transition-all text-xs text-gray-700 hover:shadow-sm">
-                        <p class="font-bold text-[#C8B1B1] mb-0.5">🌧️ 臨時下雨備案規劃</p>
-                        <p class="text-gray-400 text-[0.7rem] leading-normal">若遇到氣候不佳，為今日室外行程推薦鄰近的最佳雨天微調指南。</p>
-                    </button>
-                </div>
-            </div>
-
-            <!-- AI Response Box -->
-            <div id="ai-response-container" class="hidden space-y-2">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-[0.75rem] font-bold text-gray-400 tracking-wider">助理回覆</h3>
-                    <button onclick="copyResponse()" class="text-[0.7rem] text-[#8FA2B0] hover:underline flex items-center space-x-1">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-                        <span>複製文字</span>
-                    </button>
-                </div>
-                <div id="ai-response-content" class="bg-white p-4 rounded-lg border border-gray-100 text-xs text-gray-600 leading-relaxed max-h-[200px] overflow-y-auto whitespace-pre-wrap select-text">
-                    <!-- AI response will go here -->
-                </div>
-            </div>
-
-            <!-- Custom API Key Setup -->
-            <div class="pt-2 border-t border-gray-100">
-                <details class="text-[0.7rem] text-gray-400 cursor-pointer">
-                    <summary class="hover:text-gray-600">自訂 API 金鑰設定 (選填)</summary>
-                    <div class="mt-2 space-y-1.5">
-                        <p class="text-[0.65rem] text-gray-400">在 Canvas 環境中會自動帶入 API key。若於一般瀏覽器單獨打開，可手動填入：</p>
-                        <input id="custom-api-key" type="password" placeholder="輸入您的 Gemini API Key" class="w-full p-2 border border-gray-200 rounded text-xs focus:outline-none focus:ring-1 focus:ring-[#8FA2B0]">
-                    </div>
-                </details>
-            </div>
-        </div>
-
-        <!-- Drawer Footer -->
-        <div class="p-3 border-t border-gray-100 bg-white flex items-center space-x-2">
-            <input id="ai-chat-input" type="text" placeholder="向 AI 詢問今日釜山行程疑問..." class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#8FA2B0]">
-            <button onclick="sendChatMessage()" class="p-2 bg-[#8FA2B0] hover:bg-[#8FA2B0]/90 text-white rounded-lg transition-all">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                </svg>
-            </button>
-        </div>
     </div>
 
     <!-- 記帳與換算工具抽屜 (Finance Drawer) -->
@@ -519,7 +410,7 @@
         </div>
     </div>
 
-    <!-- 消費統計總覽抽屜 (Summary Drawer) - 新增之收合側邊抽屜 -->
+    <!-- 消費統計總覽抽屜 (Summary Drawer) -->
     <div id="summary-drawer" class="fin-drawer">
         <!-- Drawer Header -->
         <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-[#FAF9F6] rounded-t-20">
@@ -602,41 +493,42 @@
                         </div>
                     </div>
 
-                    <div class="time-node">
-                        <div>
-                            <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#C8B1B1]/15 text-[#C8B1B1] mb-1.5">【下午】</span>
-                            <p class="eng-text text-sm text-[#7E7E7E] mt-0.5">18:15</p>
-                            <p class="text-[0.95rem] font-semibold mt-0.5">飯店辦理入住</p>
-                            <p class="text-xs text-gray-400 mt-1 eng-text">Two H Hotel</p>
-                        </div>
-                    </div>
-
+                    <!-- 飯店辦理入住與晚上行程合併至同一個【晚上】時間節點中 -->
                     <div class="time-node">
                         <div>
                             <span class="inline-block px-1.5 py-0.5 text-[0.7rem] font-bold rounded bg-[#C8B1B1]/15 text-[#C8B1B1] mb-1.5">【晚上】</span>
-                            <p class="eng-text text-sm text-[#7E7E7E] mt-0.5">19:00</p>
-                            <p class="text-[0.95rem] font-semibold mt-0.5 mb-2">西面商圈</p>
-                            <div class="space-y-2 text-[0.85rem] text-gray-600 pl-1">
-                                <p class="flex items-center justify-between">
-                                    <span>• 晚餐：英子麵店</span>
-                                    <span class="text-xs text-gray-400 eng-text">(至 20:00)</span>
-                                </p>
-                                <p class="flex items-center justify-between">
-                                    <span>• MUSINSA STANDARD</span>
-                                    <span class="text-xs text-gray-400 eng-text">(至 22:00)</span>
-                                </p>
-                                <p class="flex items-center justify-between">
-                                    <span>• 西面藥局</span>
-                                    <span class="text-xs text-gray-400 eng-text">(至 23:00)</span>
-                                </p>
-                                <p class="flex items-center justify-between">
-                                    <span>• Gachya Ocean 轉蛋店</span>
-                                    <span class="text-xs text-gray-400 eng-text">(至 23:00)</span>
-                                </p>
-                                <p class="flex items-center justify-between">
-                                    <span>• Olive Young</span>
-                                    <span class="text-xs text-gray-400 eng-text">(至 23:00)</span>
-                                </p>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="eng-text text-sm text-[#7E7E7E]">18:15</p>
+                                    <p class="text-[0.95rem] font-semibold mt-0.5">飯店辦理入住</p>
+                                    <p class="text-xs text-gray-400 mt-1 eng-text">Two H Hotel</p>
+                                </div>
+                                <div class="border-t border-gray-100 pt-3">
+                                    <p class="eng-text text-sm text-[#7E7E7E]">19:00</p>
+                                    <p class="text-[0.95rem] font-semibold mb-2">西面商圈</p>
+                                    <div class="space-y-2 text-[0.85rem] text-gray-600 pl-1">
+                                        <p class="flex items-center justify-between">
+                                            <span>• 晚餐：英子麵店</span>
+                                            <span class="text-xs text-gray-400 eng-text">(至 20:00)</span>
+                                        </p>
+                                        <p class="flex items-center justify-between">
+                                            <span>• MUSINSA STANDARD</span>
+                                            <span class="text-xs text-gray-400 eng-text">(至 22:00)</span>
+                                        </p>
+                                        <p class="flex items-center justify-between">
+                                            <span>• 西面藥局</span>
+                                            <span class="text-xs text-gray-400 eng-text">(至 23:00)</span>
+                                        </p>
+                                        <p class="flex items-center justify-between">
+                                            <span>• Gachya Ocean 轉蛋店</span>
+                                            <span class="text-xs text-gray-400 eng-text">(至 23:00)</span>
+                                        </p>
+                                        <p class="flex items-center justify-between">
+                                            <span>• Olive Young</span>
+                                            <span class="text-xs text-gray-400 eng-text">(至 23:00)</span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -885,7 +777,7 @@
                             <p class="text-xs text-gray-400 eng-text">09:00</p>
                             <p class="text-[0.95rem] font-semibold mt-0.5">早午餐 curve share</p>
                             <div class="space-y-1 text-[0.85rem] text-gray-600 pl-1 mt-2">
-                                <p>• 柯達南浦洞旗艦店</p>
+                                <p>• 柯達南浦洞旗慢店</p>
                                 <p>• EPT 釜山光復店 (鞋子)</p>
                                 <p>• I LOVE MUSIC (專輯)</p>
                             </div>
@@ -1072,35 +964,12 @@
         }
     }
 
-    // AI 抽屜開關
-    function toggleAIDrawer(isOpen) {
-        const drawer = document.getElementById('ai-drawer');
-        const finDrawer = document.getElementById('fin-drawer');
-        const sumDrawer = document.getElementById('summary-drawer');
-        if (isOpen) {
-            // 互斥邏輯：開啟 AI 助理時，關閉其餘抽屜
-            if (finDrawer && finDrawer.classList.contains('open')) {
-                toggleFinanceDrawer(false);
-            }
-            if (sumDrawer && sumDrawer.classList.contains('open')) {
-                toggleSummaryDrawer(false);
-            }
-            drawer.classList.add('open');
-        } else {
-            drawer.classList.remove('open');
-        }
-    }
-
     // 記帳與匯率換算抽屜開關
     function toggleFinanceDrawer(isOpen) {
         const finDrawer = document.getElementById('fin-drawer');
-        const aiDrawer = document.getElementById('ai-drawer');
         const sumDrawer = document.getElementById('summary-drawer');
         if (isOpen) {
             // 互斥邏輯：開啟記帳工具時，關閉其餘抽屜
-            if (aiDrawer && aiDrawer.classList.contains('open')) {
-                toggleAIDrawer(false);
-            }
             if (sumDrawer && sumDrawer.classList.contains('open')) {
                 toggleSummaryDrawer(false);
             }
@@ -1115,12 +984,8 @@
     function toggleSummaryDrawer(isOpen) {
         const sumDrawer = document.getElementById('summary-drawer');
         const finDrawer = document.getElementById('fin-drawer');
-        const aiDrawer = document.getElementById('ai-drawer');
         if (isOpen) {
             // 互斥邏輯：開啟統計抽屜時，收起其餘抽屜
-            if (aiDrawer && aiDrawer.classList.contains('open')) {
-                toggleAIDrawer(false);
-            }
             if (finDrawer && finDrawer.classList.contains('open')) {
                 toggleFinanceDrawer(false);
             }
@@ -1130,143 +995,6 @@
             sumDrawer.classList.remove('open');
         }
     }
-
-    // 呼叫 Gemini 服務
-    async function callGemini(userQuery, systemInstructions) {
-        let apiKey = document.getElementById('custom-api-key').value.trim();
-        if (!apiKey) {
-            apiKey = ""; 
-        }
-
-        // 使用 Canvas 環境與一般通用最支援的 gemini-2.5-flash-preview-09-2025 模型
-        const model = "gemini-2.5-flash-preview-09-2025";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-
-        const payload = {
-            contents: [{ parts: [{ text: userQuery }] }],
-            systemInstruction: {
-                parts: [{ text: systemInstructions }]
-            }
-        };
-
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error?.message || "無法連結至 API 端點");
-            }
-
-            const result = await response.json();
-            const candidate = result.candidates?.[0];
-            if (candidate && candidate.content?.parts?.[0]?.text) {
-                return candidate.content.parts[0].text;
-            } else {
-                return "AI 助理目前沒有產生有效的文字，請再試一次。";
-            }
-        } catch (error) {
-            console.error("Gemini API Error:", error);
-            return `連線失敗。\n若您不在 Canvas 沙盒環境中，請展開下方「自訂 API 金鑰設定」並貼上您的 Gemini API Key 以利調用。\n\n詳細錯誤訊息: ${error.message}`;
-        }
-    }
-
-    // 複製回覆至剪貼簿
-    function copyResponse() {
-        const textElement = document.getElementById('ai-response-content');
-        const range = document.createRange();
-        range.selectNode(textElement);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        
-        try {
-            document.execCommand('copy');
-            BusanFinance.showAlert('文字已成功複製至剪貼簿！');
-        } catch (err) {
-            BusanFinance.showAlert('複製失敗，請手動全選文字複製。');
-        }
-        window.getSelection().removeAllRanges();
-    }
-
-    async function askPreset(type) {
-        const responseContainer = document.getElementById('ai-response-container');
-        const responseContent = document.getElementById('ai-response-content');
-        
-        responseContainer.classList.remove('hidden');
-        responseContent.innerHTML = "🧙‍♂️ 正在調用在地旅遊達人腦袋，為您規劃中...";
-
-        const todayData = travelDatabase[activeDateKey];
-        const itineraryContext = todayData ? todayData.itinerary : "無今日特定行程";
-        const supplementContext = todayData ? todayData.supplement : "無補充說明";
-
-        let systemInstructions = `你是一位精通韓國釜山旅遊的在地旅遊規劃大師。我們正在進行一趟「五天四夜的釜山自由行」。
-目前我們正在瀏覽日期是：${activeDateKey} (${todayData ? todayData.title : ''})。
-今日安排的行程脈絡如下：
-【核心行程安排】: 
-${itineraryContext}
-
-【補充備案與交通】: 
-${supplementContext}
-
-請依照使用者的詢問，給予乾淨、精準、不囉唆的條列式回答。避免文學式的冗贅感性形容，並符合莫蘭迪簡約美學。`;
-
-        let userQuery = "";
-
-        if (type === 'food') {
-            userQuery = `請針對今日行程中安排的【所有餐廳與點餐】（包含備案餐廳、甜點店與小蛋糕店等），自動提供：
-1. 實用的韓文點餐對話（請附上英文拼音/注音發音輔助，以及中文對照說明，例如如何叫店員、結帳）。
-2. 在這些店最推薦的必點招牌與基本點餐範例（如果是韓文，請附上韓文與發音，方便我們直接手動比給店員看）。`;
-        } else if (type === 'taxi') {
-            userQuery = `請幫我整理今日行程中所提到的【飯店、餐廳、景點、地鐵站】。
-我需要你幫我列出他們的：
-1. 中文名稱
-2. 韓文名稱（方便給計程車司機導航、或輸入 Naver Map）
-3. 精確的韓文地址（如果行程中有提供，請使用行程中的；若沒有，請根據你在釜山在地的知識列出最經典、正確的地址，例如 Two H Hotel 的地址是: 동구 조방로38번길 7-1, 동구）
-請用非常乾淨的卡片清單形式整理，讓我可以直接複製貼上。`;
-        } else if (type === 'weather') {
-            userQuery = `今日行程如果有任何戶外行程（如 Luge 滑車、廣安里海灘、海岸與膠囊列車、白淺灘文化村等），若突然遇到「下雨」等不佳天氣：
-1. 請告訴我今天有哪幾個節點最容易受天氣影響。
-2. 針對 these 受影響的戶外行程，推薦「最鄰近、順路、且在西面、海雲台或影島南浦周邊」的室內替代備案（如室內展覽、新世界百貨室內活動、百貨汗蒸幕等， or 鄰近合適的雨天咖啡廳）。
-請以極度實用的應變方針呈現。`;
-        }
-
-        const aiResult = await callGemini(userQuery, systemInstructions);
-        responseContent.innerText = aiResult;
-    }
-
-    // 自由輸入對話
-    async function sendChatMessage() {
-        const inputField = document.getElementById('ai-chat-input');
-        const userMessage = inputField.value.trim();
-        if (!userMessage) return;
-
-        const responseContainer = document.getElementById('ai-response-container');
-        const responseContent = document.getElementById('ai-response-content');
-
-        responseContainer.classList.remove('hidden');
-        responseContent.innerHTML = "🧙‍♂️ 釜山達人思索中...";
-        inputField.value = ""; // 清空輸入框
-
-        const todayData = travelDatabase[activeDateKey];
-        const itineraryContext = todayData ? todayData.itinerary : "無今日特定行程";
-
-        let systemInstructions = `你是一位簡約極簡風釜山旅遊達人。
-我們目前正在安排的釜山自由行天數為：${activeDateKey}。
-今天的行程為：${itineraryContext}。
-請針對使用者的自由提問（可能是臨時改景點、交通疑難、或釜山地道飲食文化），給予客觀、最省時省力、條列分明的回答。不可說廢話。`;
-
-        const aiResult = await callGemini(userMessage, systemInstructions);
-        responseContent.innerText = aiResult;
-    }
-
-    document.getElementById('ai-chat-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendChatMessage();
-        }
-    });
 
     // ==========================================
     // 記帳與匯率換算專屬命名空間 (BusanFinance)
